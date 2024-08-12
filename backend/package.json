@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "start:docker": "ts-node-dev --respawn --transpile-only --poll src/app.ts",
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node dist/app.js"

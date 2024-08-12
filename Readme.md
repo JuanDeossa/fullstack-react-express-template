@@ -1,11 +1,7 @@
 # Este es un template para inicializar una app fullstack utilizando React+TS y Express+TS
 
-## Backend
-- Abrir una terminal desde la carpeta backend
-- npm i
-- npm run start:dev
+## Docker
 
-## Frontend
-- Abrir una terminal desde la carpeta frontend
-- npm i
-- npm run start:dev
+- Abrir una terminal desde la carpeta raiz
+- docker compose up --build
+- visualizar contenedores, imagenes y volumenes mediante docker desktop o la consola ( docker ps )
