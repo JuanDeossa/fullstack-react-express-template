@@ -31,6 +31,8 @@ services:
         - PORT:${PORT}
     ports:
       - "${PORT}:${PORT}"
+    depends_on:
+      - db
     env_file:
       - .env
     volumes:

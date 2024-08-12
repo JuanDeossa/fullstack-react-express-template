@@ -20,6 +20,10 @@ RUN npm install
 # Copia el resto del código de la aplicación
 COPY tsconfig*.json ${DIR}
 COPY src ${DIR}/src
+COPY prisma ${DIR}/prisma
+
+# Genera el cliente Prisma
+RUN npx prisma generate
 
 # Expone el puerto en el que tu app va a correr
 EXPOSE ${PORT}
