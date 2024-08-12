@@ -29,6 +29,7 @@ services:
       target: dev
       args:
         - PORT:${PORT}
+    command: sh -c "npx prisma migrate dev && npm run start:dev"
     ports:
       - "${PORT}:${PORT}"
     depends_on:
