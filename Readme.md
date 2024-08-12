@@ -1,6 +1,6 @@
 # Este es un template para inicializar una app fullstack utilizando React+TS y Express+TS
 
-## Docker
+## Docker ( base de datos postgresql y prisma )
 
 - Abrir una terminal desde la carpeta raiz
 - docker compose up --build
