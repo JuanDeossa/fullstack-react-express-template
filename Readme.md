@@ -3,5 +3,8 @@
 ## Docker ( base de datos postgresql y prisma )
 
 - Abrir una terminal desde la carpeta raiz
-- docker compose up --build
-- visualizar contenedores, imagenes y volumenes mediante docker desktop o la consola ( docker ps )
+- Tener inicializado docker ( recomendado docker desktop )
+- Modificar los archivos .env.example ---> .env y completar los valores de sus variables
+
+```markdown
+docker compose up --build -d
