@@ -8,9 +8,6 @@ const { PORT } = envs;
 //
 
 (async () => {
-  // server.use("/", (_req, res) => {
-  //   res.send("I am the backend");
-  // });
   server.use("/api/auth", authRouter);
   server.use("/api/users", userRouter);
 
@@ -40,10 +37,6 @@ const { PORT } = envs;
           id: 5,
           name: "Hector",
         },
-        // {
-        //   id: 6,
-        //   name: "Luis",
-        // },
       ],
     });
   });

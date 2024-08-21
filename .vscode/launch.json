@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to Docker",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "restart": true,
+            "localRoot": "${workspaceFolder}/backend", // Ruta local ajustada a la carpeta backend
+            "remoteRoot": "/app", // Debe coincidir con el WORKDIR en el Dockerfile
+        },
+        {
+            "name": "Attach to Local",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "restart": true,
+            "localRoot": "${workspaceFolder}/backend", // // Ruta local en tu máquina
+            "remoteRoot": "${workspaceFolder}/backend", // // Ruta local en tu máquina
+        },
+    ]
+}

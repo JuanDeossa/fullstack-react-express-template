@@ -26,7 +26,10 @@ COPY prisma ${DIR}/prisma
 RUN npx prisma generate
 
 # Expone el puerto en el que tu app va a correr
-EXPOSE ${PORT}
+EXPOSE ${PORT:-8080}
+
+# Expone el puerto para el debugger
+EXPOSE 9229
 
 # Comando para ejecutar la app en modo desarroll
 CMD ["npm", "run", "start:docker"]

@@ -17,7 +17,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       const token = await refreshTokenService();
       if (token) {
         setUser({
-          email: "juandeossa.nc@gmail.com",
+          email: "test.user@test.com",
           id: "123",
           token: token,
         });

@@ -4,8 +4,15 @@
 
 - Abrir una terminal desde la carpeta raiz
 - Tener inicializado docker ( recomendado docker desktop )
-- Modificar los archivos .env.template por .env en la raiz y backend/ y completar los valores de sus variables
-- Modificar el archivo .env.template por .env.local en el frontend/ y completar los valores de sus variables
+- Agregar archivo .env en la raiz ( según .env.template de la raiz )
+- Agregar archivo .env en backend/ ( según .env.template de backend/ )
+- Agregar archivo .env.local en frontend/ ( según .env.template de frontend )
+
+- verificar que no estén corriendo otros contenedores con igual puerto que los descritos en el docker-compose.yml
 
 ```markdown
-docker compose up --build -d
+- docker compose up -d --build ( desde la carpeta raiz )
+```
+
+- visualizar contenedores, imagenes y volumenes mediante docker desktop o la consola ( docker ps )
+- ejecutar npm i dentro de backend y frontend para que typescript tenga los tipos disponibles
