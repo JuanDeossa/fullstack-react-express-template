@@ -4,7 +4,8 @@ import { envs } from "./config/envs";
 const { PORT } = envs;
 
 (async () => {
-  server.use("/", (_req, res) => {
+  server.use("/api/test", (req, res) => {
+    console.log(req);
     res.send(`<h1>I am the backend</h1>`);
   });
 
