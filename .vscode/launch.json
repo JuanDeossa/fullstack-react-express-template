@@ -16,8 +16,8 @@
             "request": "attach",
             "port": 9229,
             "restart": true,
-            "localRoot": "${workspaceFolder}/backend", // Ruta local ajustada a la carpeta backend
-            "remoteRoot": "${workspaceFolder}/backend", // Debe coincidir con el WORKDIR en el Dockerfile
+            "localRoot": "${workspaceFolder}/backend", // // Ruta local en tu máquina
+            "remoteRoot": "${workspaceFolder}/backend", // // Ruta local en tu máquina
         },
     ]
 }
