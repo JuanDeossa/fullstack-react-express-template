@@ -33,7 +33,7 @@ services:
     ports:
       - "${PORT:-8080}:${PORT:-8080}"
       - "9229:9229"
-    command: sh -c "npx prisma migrate dev && npm run start:docker"
+    command: sh -c "npx prisma migrate dev && npx prisma db seed && npm run start:docker"
     depends_on:
       - db
     volumes:
