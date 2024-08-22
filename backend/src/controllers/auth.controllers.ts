@@ -54,14 +54,8 @@ export const loginController = async (
       httpOnly: true, // Evita el acceso desde JavaScript
       secure: process.env.NODE_ENV === "production", // Solo se envía sobre HTTPS
       sameSite: "strict", // Previene ataques CSRF
-      maxAge: 1000 * 60 * 60, // Tiempo de vida en milisegundos
+      maxAge: envs.REFRESH_TOKEN_EXPIRES_IN,
     });
-
-    // res.clearCookie("refreshToken", {
-    //   httpOnly: true,
-    //   sameSite: "strict",
-    //   secure: true, // Asegúrate de configurar esto adecuadamente según tu entorno
-    // });
 
     res.status(201).json({
       success: true,

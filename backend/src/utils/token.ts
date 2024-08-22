@@ -6,7 +6,7 @@ const { ACCESS_JWT_SECRET, REFRESH_JWT_SECRET } = envs;
 
 export const generateAccessToken = (
   payload: AccessJwtPayload,
-  expiresIn = 60 * 0.25
+  expiresIn = 3600000 // 1 hora
 ) => {
   const accessTokenPayload = {
     userId: payload.userId,
@@ -19,7 +19,7 @@ export const generateAccessToken = (
 
 export const generateRefreshToken = (
   payload: RefreshJwtPayload,
-  expiresIn = 60 * 5
+  expiresIn = 2.592e+9 // 30 dias
 ) => {
   const refreshTokenPayload = {
     userId: payload.userId,

@@ -9,4 +9,8 @@ export const envs = {
   SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD || "",
   ADMIN_EMAIL: process.env.ADMIN_EMAIL || "",
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || "",
+  ACCESS_TOKEN_EXPIRES_IN:
+    Number(process.env.ACCESS_TOKEN_EXPIRES_IN) || 1000 * 60 * 60, // 1 hour
+  REFRESH_TOKEN_EXPIRES_IN:
+    Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 1000 * 60 * 60 * 24 * 30, // 30 days
 };

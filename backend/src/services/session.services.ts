@@ -22,8 +22,8 @@ export const createSessionService = async (
       throw new CustomError("Invalid credentials", 400, "VALIDATION_ERROR");
     }
 
-    const accessTokenExpiration = 1000 * 60 * 0.2; // 0.2 minutes
-    const refreshTokenExpiration = 1000 * 60 * 0.5; // 20 minutes
+    const accessTokenExpiration = envs.ACCESS_TOKEN_EXPIRES_IN;
+    const refreshTokenExpiration = envs.REFRESH_TOKEN_EXPIRES_IN;
 
     // Crear tokens
     const accessToken = generateAccessToken(

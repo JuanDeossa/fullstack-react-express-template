@@ -127,7 +127,10 @@ export const refreshTokenService = async (
       throw new CustomError("Invalid or expired refresh tokenn", 401, "ERROR");
     }
 
-    const newAccessToken = generateAccessToken({ userId: userId });
+    const newAccessToken = generateAccessToken(
+      { userId: userId },
+      envs.ACCESS_TOKEN_EXPIRES_IN / 1000
+    );
 
     return newAccessToken;
   } catch (error) {
