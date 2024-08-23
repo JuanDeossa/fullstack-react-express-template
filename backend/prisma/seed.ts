@@ -8,9 +8,31 @@ async function main() {
   const {
     SUPER_ADMIN_EMAIL,
     SUPER_ADMIN_PASSWORD,
-    ADMIN_EMAIL,
-    ADMIN_PASSWORD,
+    DEVELOPER_EMAIL,
+    DEVELOPER_PASSWORD,
   } = envs;
+
+  // Crea el usuario developer
+  if (DEVELOPER_EMAIL === "" || DEVELOPER_PASSWORD === "") {
+    console.error(
+      "No se puede crear el usuario developer por falta de credenciales en el archivo .env"
+    );
+  } else {
+    const hashedPassword = await bcrypt.hash(DEVELOPER_PASSWORD, 10);
+
+    const developer = await prisma.user.upsert({
+      where: { email: DEVELOPER_EMAIL },
+      update: {},
+      create: {
+        email: DEVELOPER_EMAIL,
+        password: hashedPassword,
+        name: "Developer User",
+        role: "DEVELOPER",
+      },
+    });
+
+    console.table([developer.email, developer.role]);
+  }
 
   // Crea el usuario super administrador
   if (SUPER_ADMIN_EMAIL === "" || SUPER_ADMIN_PASSWORD === "") {
@@ -31,29 +53,7 @@ async function main() {
       },
     });
 
-    console.log(`super admin registered: ${superAdmin.email}`);
-  }
-
-  // Crea el usuario administrador
-  if (ADMIN_EMAIL === "" || ADMIN_PASSWORD === "") {
-    console.error(
-      "No se puede crear el usuario administrador por falta de credenciales en el archivo .env"
-    );
-  } else {
-    const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
-
-    const admin = await prisma.user.upsert({
-      where: { email: ADMIN_EMAIL },
-      update: {},
-      create: {
-        email: ADMIN_EMAIL,
-        password: hashedPassword,
-        name: "Admin User",
-        role: "ADMIN",
-      },
-    });
-
-    console.log(`admin registered: ${admin.email}`);
+    console.table([superAdmin.email, superAdmin.role]);
   }
 }
 

@@ -7,8 +7,8 @@ export const envs = {
   FRONTEND_BASE_URL: process.env.FRONTEND_BASE_URL || "",
   SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL || "",
   SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD || "",
-  ADMIN_EMAIL: process.env.ADMIN_EMAIL || "",
-  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || "",
+  DEVELOPER_EMAIL: process.env.DEVELOPER_EMAIL || "",
+  DEVELOPER_PASSWORD: process.env.DEVELOPER_PASSWORD || "",
   ACCESS_TOKEN_EXPIRES_IN:
     Number(process.env.ACCESS_TOKEN_EXPIRES_IN) || 1000 * 60 * 60, // 1 hour
   REFRESH_TOKEN_EXPIRES_IN:
