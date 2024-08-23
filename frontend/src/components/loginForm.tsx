@@ -2,11 +2,13 @@ import { useForm } from "react-hook-form";
 import { envs } from "../config/envs";
 import { useAuth } from "../hooks/useAuth";
 import { loginService } from "../api/services";
+import { useNav } from "../hooks/useNav";
+import { paths } from "../routes/paths";
 
 export const LoginForm = () => {
   //
-  const { setUser } = useAuth();
-
+  const { login } = useAuth();
+  const { navigate } = useNav();
   const { register, handleSubmit } = useForm({
     defaultValues: {
       email: envs.EMAIL, // pending
@@ -22,7 +24,9 @@ export const LoginForm = () => {
 
     if (!user) return;
 
-    setUser(user);
+    login(user);
+
+    navigate({ path: paths.HOME, replace: false });
   };
   //
   return (

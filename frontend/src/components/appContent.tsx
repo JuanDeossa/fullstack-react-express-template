@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { Home } from "./home";
-import { LoginForm } from "./loginForm";
 import { setupInterceptors } from "../api/interceptors/authInterceptor";
+import { AppRouter } from "../routes/appRouter";
 
 export const AppContent = () => {
   //
@@ -22,13 +21,7 @@ export const AppContent = () => {
 
   return (
     <>
-      {!user ? (
-        <div className="login min-h-screen bg-indigo-200 grid place-content-center">
-          <LoginForm />
-        </div>
-      ) : (
-        <Home />
-      )}
+      <AppRouter user={user} />
     </>
   );
 };

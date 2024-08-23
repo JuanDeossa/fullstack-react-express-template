@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
+import { User } from "../types/user";
 
 export const useAuth = () => {
   const currentUserContext = useContext(AuthContext);
@@ -12,6 +13,10 @@ export const useAuth = () => {
 
   const { user, setUser } = currentUserContext;
 
+  const login = (user: User) => {
+    setUser(user);
+  };
+
   const logout = () => {
     setUser(null);
   };
@@ -19,6 +24,7 @@ export const useAuth = () => {
   return {
     user,
     setUser,
+    login,
     logout,
   };
 };
