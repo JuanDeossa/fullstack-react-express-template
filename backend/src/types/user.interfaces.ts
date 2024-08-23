@@ -3,7 +3,7 @@
 
 export interface BaseUser {
   email: string;
-  role?: string;
+  role: string;
   deletedAt?: Date | null;
 }
 

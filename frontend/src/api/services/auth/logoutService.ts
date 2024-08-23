@@ -22,7 +22,6 @@ export const logoutService = async (): Promise<boolean> => {
         return true;
       }
     }
-    console.error(error);
 
     return false;
   }

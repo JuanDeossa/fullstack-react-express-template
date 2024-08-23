@@ -38,9 +38,9 @@ export const setupInterceptors = (
       ) {
         originalRequest._retry = true;
 
-        const newAccessToken = await refreshTokenService();
+        const user = await refreshTokenService();
 
-        if (!newAccessToken) {
+        if (!user) {
           // Limpiar el token y redirigir al login si el refresh token falla
           setToken_(null);
           updateToken(null); // Actualiza el estado en tu aplicación
@@ -50,11 +50,13 @@ export const setupInterceptors = (
           return Promise.reject();
         }
 
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        const { token } = user;
+
+        originalRequest.headers["Authorization"] = `Bearer ${token}`;
 
         // Actualiza el estado del contexto y el token global
-        updateToken(newAccessToken);
-        setToken_(newAccessToken);
+        updateToken(token);
+        setToken_(token);
 
         // Reintenta la solicitud original con el nuevo token
         return privateAxios(originalRequest);

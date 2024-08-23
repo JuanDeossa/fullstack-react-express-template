@@ -2,9 +2,19 @@
 // src/types/user.ts
 
 export interface RefreshJwtPayload {
-  userId: string;
+  sub: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
 }
 
 export interface AccessJwtPayload {
-  userId: string;
+  sub: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
 }

@@ -6,13 +6,13 @@ import { CustomError } from "../utils/errorHandler";
 import { createSession } from "../repositories/session.repository";
 import { SessionResponse } from "../types/session.interfaces";
 import { envs } from "../config/envs";
-import { UserResponse } from "../types/user.interfaces";
 import { generateAccessToken, generateRefreshToken } from "../utils/token";
+import { AccessJwtPayload } from "../types/auth.interfaces";
 
 // const saltRounds = 10;
 
 export const createSessionService = async (
-  userId: UserResponse["id"]
+  user: AccessJwtPayload["sub"]
 ): Promise<SessionResponse> => {
   try {
     // Hash de la contraseña
@@ -27,12 +27,26 @@ export const createSessionService = async (
 
     // Crear tokens
     const accessToken = generateAccessToken(
-      { userId: userId },
+      {
+        sub: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+        },
+      },
       accessTokenExpiration / 1000
     );
 
     const refreshToken = generateRefreshToken(
-      { userId: userId },
+      {
+        sub: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+        },
+      },
       refreshTokenExpiration / 1000
     );
 
@@ -44,7 +58,7 @@ export const createSessionService = async (
     );
 
     const session = await createSession({
-      userId,
+      userId: user.id,
       accessToken: accessToken,
       refreshToken: refreshToken,
       expiresAt: refreshTokenExpiresAt,
@@ -58,7 +72,7 @@ export const createSessionService = async (
       refreshToken: session.refresh_token,
       createdAt: session.created_at,
       updatedAt: session.updated_at,
-      userId: session.user_id,
+      user: session.user,
     };
     //
   } catch (error) {

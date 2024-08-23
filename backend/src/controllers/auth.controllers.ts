@@ -2,14 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import { CreateUserType } from "../schemas/user.schemas";
 import { createUserService } from "../services/user.services";
 import { LoginType } from "../schemas/auth.schemas";
-import jwt from "jsonwebtoken";
 import {
   loginService,
   logoutService,
   refreshTokenService,
 } from "../services/auth.services";
 import { envs } from "../config/envs";
-import { AccessJwtPayload } from "../types/auth.interfaces";
 
 export const registerUserController = async (
   req: Request<{}, {}, CreateUserType>,
@@ -63,10 +61,7 @@ export const loginController = async (
       message: "Login successful",
       data: {
         token: session.accessToken,
-        user: {
-          id: session.userId,
-          email,
-        },
+        user: session.user,
       },
       errors: [],
     });
@@ -111,33 +106,24 @@ export const refreshTokenController = async (
   next: NextFunction
 ) => {
   //
-  console.log("llegue al controller");
   //
   try {
     const refreshToken = req.cookies.refreshToken;
 
-    const newAccessToken = await refreshTokenService(refreshToken);
-
-    const newAccessTokenPayload = jwt.verify(
-      newAccessToken,
-      envs.ACCESS_JWT_SECRET
-    ) as AccessJwtPayload;
+    const { accessToken, user } = await refreshTokenService(refreshToken);
 
     res.status(200).json({
       success: true,
       code: "SUCCESS",
       message: "refresh token successfully",
       data: {
-        token: newAccessToken,
-        user: {
-          id: newAccessTokenPayload.userId,
-        },
+        token: accessToken,
+        user: user,
       },
       errors: [],
     });
     //
   } catch (error) {
-    console.error("Error from auth controller: ", error);
     next(error);
   }
 };

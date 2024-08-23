@@ -7,6 +7,8 @@ interface LoginDataResponse {
   user: {
     id: string;
     email: string;
+    name: string;
+    role: string;
   };
 }
 
@@ -35,6 +37,8 @@ export const loginService = async ({
       token: data.token,
       id: data.user.id,
       email: data.user.email,
+      name: data.user.name,
+      role: data.user.role,
     };
   } catch (error) {
     console.error(error);

@@ -8,13 +8,9 @@ export const useRefreshToken = () => {
 
   useEffect(() => {
     const getAccessToken = async () => {
-      const token = await refreshTokenService();
-      if (token) {
-        setUser({
-          email: "test.user@test.com",
-          id: "123",
-          token: token,
-        });
+      const user = await refreshTokenService();
+      if (user) {
+        setUser(user);
       }
     };
 

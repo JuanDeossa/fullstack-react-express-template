@@ -8,8 +8,13 @@ export const generateAccessToken = (
   payload: AccessJwtPayload,
   expiresIn = 3600000 // 1 hora
 ) => {
-  const accessTokenPayload = {
-    userId: payload.userId,
+  const accessTokenPayload: AccessJwtPayload = {
+    sub: {
+      id: payload.sub.id,
+      name: payload.sub.name,
+      email: payload.sub.email,
+      role: payload.sub.role,
+    },
   };
 
   return jwt.sign(accessTokenPayload, ACCESS_JWT_SECRET, {
@@ -19,10 +24,15 @@ export const generateAccessToken = (
 
 export const generateRefreshToken = (
   payload: RefreshJwtPayload,
-  expiresIn = 2.592e+9 // 30 dias
+  expiresIn = 2.592e9 // 30 dias
 ) => {
-  const refreshTokenPayload = {
-    userId: payload.userId,
+  const refreshTokenPayload: RefreshJwtPayload = {
+    sub: {
+      id: payload.sub.id,
+      name: payload.sub.name,
+      email: payload.sub.email,
+      role: payload.sub.role,
+    },
   };
 
   return jwt.sign(refreshTokenPayload, REFRESH_JWT_SECRET, {

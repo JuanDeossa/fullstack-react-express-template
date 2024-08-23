@@ -12,6 +12,7 @@ import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { envs } from "../config/envs";
 import { RefreshJwtPayload } from "../types/auth.interfaces";
 import { generateAccessToken } from "../utils/token";
+import { isRefreshJwtPayload } from "../utils/verifyPayloadType";
 
 export const loginService = async (
   userData: LoginType
@@ -32,7 +33,12 @@ export const loginService = async (
       throw new CustomError("Invalid credentials", 400, "VALIDATION_ERROR");
     }
 
-    const session = await createSessionService(user.id);
+    const session = await createSessionService({
+      id: user.id,
+      email: user.email,
+      name: user.email,
+      role: user.role,
+    });
 
     return session;
     //
@@ -55,16 +61,13 @@ export const logoutService = async (
   refreshToken: string
 ): Promise<SessionResponse> => {
   try {
-    const decodedToken = jwt.verify(
-      refreshToken,
-      envs.REFRESH_JWT_SECRET
-    ) as RefreshJwtPayload | null;
+    const decodedToken = jwt.verify(refreshToken, envs.REFRESH_JWT_SECRET);
 
-    const userId = decodedToken?.userId;
-
-    if (!userId) {
-      throw new CustomError("Invalid credentials", 400, "VALIDATION_ERROR");
+    if (!isRefreshJwtPayload(decodedToken)) {
+      throw new CustomError("Invalid token", 401, "VALIDATION_ERROR");
     }
+
+    const userId = decodedToken.sub.id;
 
     const session = await getSessionByRefreshTokenAndUserId(
       refreshToken,
@@ -100,23 +103,17 @@ export const logoutService = async (
 
 export const refreshTokenService = async (
   refreshToken: string
-): Promise<string> => {
-  // console.log("refreshToken given from service: ", refreshToken);
-
+): Promise<{ accessToken: string; user: RefreshJwtPayload["sub"] }> => {
+  //
   try {
     //
-    const decodedToken = jwt.verify(
-      refreshToken,
-      envs.REFRESH_JWT_SECRET
-    ) as RefreshJwtPayload | null;
+    const decodedToken = jwt.verify(refreshToken, envs.REFRESH_JWT_SECRET);
 
-    console.log("decodedToken", decodedToken);
-
-    const userId = decodedToken?.userId;
-
-    if (!userId) {
-      throw new CustomError("invalid token", 401, "INVALID_TOKEN");
+    if (!isRefreshJwtPayload(decodedToken)) {
+      throw new CustomError("Invalid token", 401, "VALIDATION_ERROR");
     }
+
+    const userId = decodedToken.sub.id;
 
     const session = await getSessionByRefreshTokenAndUserId(
       refreshToken,
@@ -128,11 +125,16 @@ export const refreshTokenService = async (
     }
 
     const newAccessToken = generateAccessToken(
-      { userId: userId },
+      {
+        sub: decodedToken.sub,
+      },
       envs.ACCESS_TOKEN_EXPIRES_IN / 1000
     );
 
-    return newAccessToken;
+    return {
+      accessToken: newAccessToken,
+      user: decodedToken.sub,
+    };
   } catch (error) {
     //
     console.error("Error from service", error);

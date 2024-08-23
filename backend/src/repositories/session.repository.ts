@@ -16,6 +16,9 @@ export const createSession = async (sessionData: CreateSessionType) => {
         refresh_token: sessionData.refreshToken,
         expires_at: sessionData.expiresAt,
       },
+      include: {
+        user: { select: { id: true, name: true, email: true, role: true } },
+      },
     });
 
     return session;
@@ -51,18 +54,21 @@ export const getSessionByRefreshTokenAndUserId = async (
     // Busca la sesion en la base de datos
     const session = await prisma.session.findUnique({
       where: { refresh_token: refreshToken, user_id: userId },
+      include: {
+        user: { select: { id: true, name: true, email: true, role: true } },
+      },
     });
 
     if (session) {
       return {
         id: session.id,
-        userId: session.user_id,
         accessToken: session.access_token,
         refreshToken: session.refresh_token,
         expiresAt: session.expires_at,
         isActive: session.is_active,
         createdAt: session.created_at,
         updatedAt: session.updated_at,
+        user: session.user,
       };
     }
 
@@ -84,13 +90,16 @@ export const finishSession = async (
       data: {
         is_active: false,
       },
+      include: {
+        user: { select: { id: true, name: true, email: true, role: true } },
+      },
     });
 
     // console.log("sessionUpdated", session);
 
     return {
       id: session.id,
-      userId: session.user_id,
+      user: session.user,
       accessToken: session.access_token,
       refreshToken: session.refresh_token,
       expiresAt: session.expires_at,
