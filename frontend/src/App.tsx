@@ -1,12 +1,6 @@
 import axios from "axios";
 import { baseUrl } from "../routes/paths";
-import {
-  BrowserRouter,
-  Link,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
 export const App = () => {
   //
@@ -28,8 +22,6 @@ export const App = () => {
 
 const C1 = () => {
   //
-  const nav = useNavigate();
-
   const handleFetchGet = async () => {
     //
     const url = `${baseUrl}/test`;
