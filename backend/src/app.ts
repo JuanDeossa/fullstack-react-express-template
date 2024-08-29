@@ -5,13 +5,24 @@ const { PORT } = envs;
 
 (async () => {
   server.get("/api/test", (_req, res) => {
-    res.status(200).json({
-      success: true,
-      data: {
-        message: "success test",
-      },
-      error: null,
-    });
+    //
+    try {
+      res.status(200).json({
+        success: true,
+        data: {
+          message: "success test",
+        },
+        error: null,
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: true,
+        data: {
+          message: error?.message || "",
+        },
+        error: null,
+      });
+    }
   });
 
   server.delete("/api/test/:id", (_req, res) => {
