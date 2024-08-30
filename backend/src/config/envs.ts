@@ -23,4 +23,8 @@ export const envs = {
   PORT: process.env.PORT || 8080,
   CLIENT_URL: CLIENT_URL,
   WHITELIST: getWhitelist() || [],
+  SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL || "",
+  SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD || "",
+  DEVELOPER_EMAIL: process.env.DEVELOPER_EMAIL || "",
+  DEVELOPER_PASSWORD: process.env.DEVELOPER_PASSWORD || "",
 };

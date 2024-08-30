@@ -7,3 +7,4 @@ server.use(express.json()); // acepta json en las peticiones que requeran un bod
 server.use(express.urlencoded({ extended: true })); // acepta urlencoded en las peticiones que requeran un
 
 server.use(cors(corsOptions));
+// server.use(cors());
