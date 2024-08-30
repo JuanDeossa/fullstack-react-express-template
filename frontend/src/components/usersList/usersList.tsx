@@ -20,6 +20,7 @@ export const UsersList = ({ users, fetchUsers }: UsersListProps) => {
 
   return (
     <div className="UsersList flex flex-col gap-2.5">
+      <h2 className="text-xl font-semibold text-red-500">Usuarios actuales: <b>{users.length}</b></h2>
       <UserCardHeader />
       <div className="flex flex-col gap-1.5 max-h-[70vh] overflow-y-auto">
         {users.length === 0 ? (

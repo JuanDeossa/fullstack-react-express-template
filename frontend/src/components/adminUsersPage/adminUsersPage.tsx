@@ -22,7 +22,7 @@ export const AdminUsersPage = () => {
       <div className="flex gap-8">
         <div className="w-1/3">
           <UserForm fetchUsers={fetchUsers} />
-          <div className="flex gap-4">
+          <div className="flex gap-10">
             <button
               type="button"
               className="border border-gray-400 rounded-md bg-gray-400 p-1 font-semibold mt-2"
