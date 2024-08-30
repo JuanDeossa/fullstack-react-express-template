@@ -1,13 +1,11 @@
 import axios from "axios";
-import { baseUrl } from "../../../../routes/paths";
+import { usersUrl } from "../../../routes/paths";
 
 export const deleteUser = async (id: string) => {
   //
-  const url = `${baseUrl}/users/${id}`;
-
   try {
     //
-    const { status } = await axios.delete(url);
+    const { status } = await axios.delete(`${usersUrl}/${id}`);
 
     if (status !== 204) return null;
     return true;

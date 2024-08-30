@@ -14,16 +14,11 @@ export const createManyUsers = async (
   }
 
   for (const email of userEmails) {
-    const { status } = await createUser({
+    await createUser({
       name: email.split("@")[0],
       email: email,
       password: "123456",
     });
-    if (status === 201) {
-      console.log(`User created: ${email}`);
-    } else {
-      console.log(`User not created: ${email}`);
-    }
   }
 
   fetchUsers();

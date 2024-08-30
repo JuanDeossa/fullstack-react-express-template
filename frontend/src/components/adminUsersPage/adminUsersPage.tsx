@@ -3,6 +3,7 @@ import { UserForm, UsersList } from "../";
 import { getUsers } from "../../services";
 import { UserResponse } from "../../types/user/user.interfaces";
 import { createManyUsers, deleteAllUsers } from "../../../devtools";
+import { DEVTOOL_CREATE_USERS_RATE_LIMIT } from "../../config/envs";
 
 export const AdminUsersPage = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
@@ -34,6 +35,8 @@ export const AdminUsersPage = () => {
     fetchUsers();
   }, []);
 
+  const createLimit = DEVTOOL_CREATE_USERS_RATE_LIMIT;
+
   return (
     <div className="AdminUsersPage min-h-screen bg-indigo-50 pt-10 pl-10">
       <div className="flex gap-8">
@@ -46,11 +49,11 @@ export const AdminUsersPage = () => {
               className="border border-gray-400 rounded-md bg-gray-400 p-1 font-semibold mt-2 disabled:opacity-75"
               onClick={async () => {
                 handleStartLoading("create");
-                await createManyUsers(10, fetchUsers);
+                await createManyUsers(createLimit, fetchUsers);
                 handleFinishLoading("create");
               }}
             >
-              {!isLoading.create ? "Registrar 10" : "Cargando..."}
+              {!isLoading.create ? `Registrar ${createLimit}` : "Cargando..."}
             </button>
             <button
               type="button"
