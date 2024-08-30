@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Router } from "express";
 import bcrypt from "bcrypt";
+import { envs } from "../config/envs";
 
 const prisma = new PrismaClient();
 
@@ -11,6 +12,12 @@ usersRouter.post("/", async (req, res) => {
   //
   try {
     const { email, password, name } = req.body;
+
+    const users = await prisma.user.findMany();
+
+    if (users.length >= envs.USERS_RATE_LIMIT) {
+      return res.status(429).json({ error: "Rate limit exceeded" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 

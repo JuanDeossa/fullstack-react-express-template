@@ -27,4 +27,5 @@ export const envs = {
   SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD || "",
   DEVELOPER_EMAIL: process.env.DEVELOPER_EMAIL || "",
   DEVELOPER_PASSWORD: process.env.DEVELOPER_PASSWORD || "",
+  USERS_RATE_LIMIT: Number(process.env.USERS_RATE_LIMIT) || 1000,
 };
