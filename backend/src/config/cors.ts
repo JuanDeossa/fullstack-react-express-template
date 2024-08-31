@@ -1,3 +1,4 @@
+import { CustomError } from "../utils/errorHandler";
 import { envs } from "./envs";
 import { CorsOptions } from "cors";
 
@@ -8,7 +9,10 @@ export const corsOptions: CorsOptions = {
     if (origin_ && WHITELIST.includes(origin_)) {
       callback(null, true);
     } else {
-      callback(new Error("no permitido"));
+      callback(
+        new CustomError("Not allowed by CORS", 403, "CORS_ERROR"),
+        false
+      );
     }
   },
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
