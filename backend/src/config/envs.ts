@@ -6,13 +6,15 @@ const CLIENT_URL = process.env.CLIENT_URL || "";
 const getWhitelist = () => {
   try {
     //
-    let whitelist: string[] = [CLIENT_URL];
+    let whitelist: string[] = [];
 
     if (process.env.WHITELIST) {
-      whitelist = [...process.env.WHITELIST?.trim().split(",,,")];
+      whitelist = [CLIENT_URL, ...process.env.WHITELIST?.trim().split(",,,")];
     }
 
-    return whitelist.filter((path) => path !== "");
+    const filteredWhitelist = whitelist.filter((path) => path !== "");
+
+    return filteredWhitelist;
   } catch (error) {}
   //
   console.error(error);
