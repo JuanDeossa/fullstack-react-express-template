@@ -1,0 +1,76 @@
+// src/middleware/errorMiddleware.ts
+import { Request, Response, NextFunction } from "express";
+import { ZodError } from "zod";
+
+interface ErrorResponse {
+  status: string;
+  message: string;
+  errors?: { field?: string | number; message: string }[];
+  code?: string;
+}
+
+export const errorMiddleware = (
+  err: any,
+  _req: Request,
+  res: Response<ErrorResponse>,
+  _next: NextFunction
+) => {
+  console.error(err); // Log the error for debugging purposes
+
+  // Default response structure
+  let response: ErrorResponse = {
+    status: "error",
+    message: "Internal server error",
+    code: "INTERNAL_SERVER_ERROR",
+    errors: [],
+  };
+
+  // Handle Zod validation errors
+  if (err instanceof ZodError) {
+    response = {
+      status: "error",
+      message: "Validation failed",
+      errors: err.errors.map((e) => ({
+        field: e.path.join("."),
+        message: e.message,
+      })),
+      code: "VALIDATION_ERROR",
+    };
+    return res.status(400).json(response);
+  }
+
+  // Custom Application Errors
+  if (err.statusCode) {
+    response = {
+      status: "error",
+      message: err.message,
+      code: err.code || "APPLICATION_ERROR",
+      errors: err.errors || [],
+    };
+    return res.status(err.statusCode).json(response);
+  }
+
+  // validar error de verificacion de token
+  if (err.name === "JsonWebTokenError") {
+    response = {
+      status: "error",
+      message: "invalid token",
+      code: "INVALID_TOKEN",
+      errors: [],
+    };
+    return res.status(401).json(response);
+  }
+  // validar error de token expirado de jwt
+  if (err.name === "TokenExpiredError") {
+    response = {
+      status: "error",
+      message: "Token expired",
+      code: "TOKEN_EXPIRED",
+      errors: [],
+    };
+    return res.status(401).json(response);
+  }
+
+  // Default to 500 Server Error
+  return res.status(500).json(response);
+};

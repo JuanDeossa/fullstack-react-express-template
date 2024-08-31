@@ -1,15 +1,13 @@
 import axios from "axios";
-import { baseUrl } from "../../../../routes/paths";
+import { usersUrl } from "../../../api/paths";
 import { CreateUser } from "../../../types";
 
 export const createUser = async ({ email, password, name }: CreateUser) => {
   //
-  const url = `${baseUrl}/users`;
-
   try {
     //Axios
     const response = await axios.post(
-      url,
+      usersUrl,
       { email, password, name },
       {
         withCredentials: true,

@@ -17,7 +17,7 @@ export const AdminUsersPage = () => {
   }, []);
 
   return (
-    <div className="AdminUsersPage min-h-screen bg-indigo-50 pt-10 pl-10">
+    <div className="AdminUsersPage pl-10 pt-4">
       <div className="flex gap-8">
         <div className="w-1/3">
           <UserForm fetchUsers={fetchUsers} />

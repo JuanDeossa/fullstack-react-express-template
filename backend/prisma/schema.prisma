@@ -29,6 +29,19 @@ model User {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+  Session    Session[]
 
   @@index([email])
+}
+
+model Session {
+  id            String   @id @default(uuid())
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  expires_at    DateTime
+  is_active     Boolean  @default(true)
+  refresh_token String   @unique
+  access_token  String   @unique
+  user          User     @relation(fields: [user_id], references: [id])
+  user_id       String
 }

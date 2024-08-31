@@ -9,6 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "ts-node-dev --inspect=0.0.0.0:9229 --respawn --transpile-only --watch .env src/app.ts",
+    "start:docker": "ts-node-dev --inspect=0.0.0.0:9229 --respawn --transpile-only --poll src/app.ts",
     "build": "tsc",
     "prestart": "npm run build && npx prisma migrate deploy && npx prisma db seed",
     "start": "node dist/src/app.js"
@@ -17,8 +18,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.2.0",
     "prisma": "^5.19.0",
     "ts-node-dev": "^2.0.0",
@@ -28,8 +31,11 @@
     "@prisma/client": "^5.19.0",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.23.8"
   }
 }

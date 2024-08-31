@@ -1,9 +1,9 @@
 import axios from "axios";
-import { baseUrl } from "../../../../routes/paths";
+import { usersUrl } from "../../../api/paths";
 
 export const deleteUser = async (id: string) => {
   //
-  const url = `${baseUrl}/users/${id}`;
+  const url = `${usersUrl}/${id}`;
 
   try {
     //
