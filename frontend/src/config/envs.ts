@@ -4,5 +4,5 @@ export const envs = {
   API_BASE_URL: import.meta.env.VITE_API_BASE_URL || "",
   DEVTOOL_CREATE_USERS_RATE_LIMIT:
     import.meta.env.VITE_DEVTOOL_CREATE_USERS_RATE_LIMIT || 100,
-  ALLOW_DEVTOOLS: Boolean(import.meta.env.VITE_ALLOW_DEVTOOLS) || false,
+  ALLOW_DEVTOOLS: import.meta.env.VITE_ALLOW_DEVTOOLS === "true" || false,
 };
