@@ -3,11 +3,9 @@ import { usersUrl } from "../../../api/paths";
 
 export const deleteUser = async (id: string) => {
   //
-  const url = `${usersUrl}/${id}`;
-
   try {
     //
-    const { status } = await axios.delete(url);
+    const { status } = await axios.delete(`${usersUrl}/${id}`);
 
     if (status !== 204) return null;
     return true;

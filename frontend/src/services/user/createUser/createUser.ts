@@ -1,6 +1,6 @@
 import axios from "axios";
 import { usersUrl } from "../../../api/paths";
-import { CreateUser } from "../../../types";
+import { CreateUser, UserResponse } from "../../../types";
 
 export const createUser = async ({ email, password, name }: CreateUser) => {
   //
@@ -13,7 +13,7 @@ export const createUser = async ({ email, password, name }: CreateUser) => {
         withCredentials: true,
       }
     );
-    const user = response.data;
+    const user = response.data as UserResponse;
     return user;
   } catch (error) {
     console.error(error);

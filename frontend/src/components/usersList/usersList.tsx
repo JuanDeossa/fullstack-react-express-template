@@ -20,21 +20,24 @@ export const UsersList = ({ users, fetchUsers }: UsersListProps) => {
 
   return (
     <div className="UsersList flex flex-col gap-2.5">
+      <h2 className="text-xl font-semibold text-red-500">Usuarios actuales: <b>{users.length}</b></h2>
       <UserCardHeader />
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1.5 max-h-[70vh] overflow-y-auto">
         {users.length === 0 ? (
           <span className="text-gray-600 font-semibold text-lg border rounded-md bg-gray-50 border-gray-300 py-2 px-4">
             No hay usuarios registrados en el sistema
           </span>
         ) : (
-          users.map((user) => (
-            <UserCard
-              key={user.email}
-              user={user}
-              handleDeleteUser={handleDeleteUser}
-              isHeader={false}
-            />
-          ))
+          users
+            .sort((a, b) => a.role.localeCompare(b.role))
+            .map((user) => (
+              <UserCard
+                key={user.email}
+                user={user}
+                handleDeleteUser={handleDeleteUser}
+                isHeader={false}
+              />
+            ))
         )}
       </div>
     </div>

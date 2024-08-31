@@ -5,6 +5,7 @@ export interface BaseUser {
   email: string;
   role: string;
   deletedAt?: Date | null;
+  name?: string;
 }
 
 // src/types/user.ts

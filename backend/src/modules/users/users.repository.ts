@@ -14,6 +14,7 @@ export const createUser = async (userData: CreateUserType) => {
       data: {
         email: userData.email,
         password: userData.password,
+        name: userData.email.split("@")[0],
       },
     });
 
@@ -58,6 +59,7 @@ export const getUsers = async (): Promise<
         createdAt: user.created_at,
         updatedAt: user.updated_at,
         deletedAt: user.deleted_at,
+        name: user.name || "",
       }));
     }
     //

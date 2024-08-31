@@ -33,4 +33,5 @@ export const envs = {
     Number(process.env.ACCESS_TOKEN_EXPIRES_IN) || 1000 * 60 * 60, // 1 hour
   REFRESH_TOKEN_EXPIRES_IN:
     Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 1000 * 60 * 60 * 24 * 30, // 30 days
+  USERS_RATE_LIMIT: Number(process.env.USERS_RATE_LIMIT) || 1000,
 };
