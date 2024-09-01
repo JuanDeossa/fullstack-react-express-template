@@ -8,29 +8,33 @@ import {
   refreshTokenService,
 } from "./auth.services";
 import { envs } from "../../config/envs";
+import { PublicUser } from "../users/user.interfaces";
 
 export const registerUserController = async (
   req: Request<{}, {}, CreateUserType>,
   res: Response,
   next: NextFunction
 ) => {
-  const { email, password } = req.body;
-
   try {
-    const user = await createUserService({ email, password });
+    const { email, password, name } = req.body;
+
+    const user = await createUserService({ email, password, name });
+
+    const publicUser: PublicUser = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+      deleted_at: user.deleted_at,
+    };
 
     res.status(201).json({
       status: "success",
-      code: "CREATED",
-      message: "User created successfully",
-      data: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-        deletedAt: user.deletedAt,
-      },
+      code: "REGISTERED",
+      message: "User registered successfully",
+      data: publicUser,
     });
     //
   } catch (error) {
@@ -43,9 +47,9 @@ export const loginController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
+
     const session = await loginService({ email, password });
 
     res.cookie("refreshToken", session.refreshToken, {
@@ -77,7 +81,7 @@ export const logoutController = async (
   next: NextFunction
 ) => {
   try {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken: string = req.cookies.refreshToken;
 
     await logoutService(refreshToken);
 
@@ -105,8 +109,6 @@ export const refreshTokenController = async (
   res: Response,
   next: NextFunction
 ) => {
-  //
-  //
   try {
     const refreshToken = req.cookies.refreshToken;
 

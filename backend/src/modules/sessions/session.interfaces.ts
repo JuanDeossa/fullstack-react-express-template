@@ -1,7 +1,18 @@
 // src/types/user.ts
 // src/types/user.ts
 
-import { User } from "@prisma/client";
+import { User, Session as PrismaSession } from "@prisma/client";
+
+export type Session = PrismaSession;
+
+export interface SessionWithUser extends Session {
+  user: {
+    id: User["id"];
+    name: User["name"];
+    email: User["email"];
+    role: User["role"];
+  };
+}
 
 export interface BaseSession {
   userId: string;

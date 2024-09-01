@@ -1,15 +1,17 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { CustomError } from "../../utils/errorHandler";
 import { CreateSessionType } from "../auth/auth.schemas";
-import { SessionResponse } from "./session.interfaces";
+import { SessionResponse, SessionWithUser } from "./session.interfaces";
+import { sessionMapper } from "./session.mapper";
 
 const prisma = new PrismaClient();
 
-export const createSession = async (sessionData: CreateSessionType) => {
+export const createSession = async (
+  sessionData: CreateSessionType
+): Promise<SessionResponse> => {
   try {
-    // Crea el usuario en la base de datos
-    const session = await prisma.session.create({
+    // Crea la sesion en la base de datos
+    const session: SessionWithUser = await prisma.session.create({
       data: {
         user_id: sessionData.userId,
         access_token: sessionData.accessToken,
@@ -21,71 +23,47 @@ export const createSession = async (sessionData: CreateSessionType) => {
       },
     });
 
-    return session;
+    return sessionMapper(session);
+  } catch (error: any) {
     //
-  } catch (error) {
-    //
-    console.error("Error from repository", error);
-    if (error instanceof PrismaClientKnownRequestError) {
-      // Error de Prisma
-      // if (error.code === "P2002") {
-      //   // Código de error específico de Prisma cuando un campo único es duplicado
-      //   throw new CustomError(
-      //     "El email ya está en uso",
-      //     409,
-      //     "EMAIL_ALREADY_EXISTS"
-      //   );
-      // }
-    }
-    // Lanza cualquier otro error no manejado
-    throw new CustomError(
-      "Error al crear la sesion",
-      500,
-      "USER_CREATION_ERROR"
-    );
+    console.error("Error from repository", error?.message || error);
+
+    throw error;
   }
 };
 
 export const getSessionByRefreshTokenAndUserId = async (
   refreshToken: string,
   userId: string
-): Promise<void | SessionResponse> => {
+): Promise<SessionResponse> => {
   try {
     // Busca la sesion en la base de datos
-    const session = await prisma.session.findUnique({
+    const session: SessionWithUser | null = await prisma.session.findUnique({
       where: { refresh_token: refreshToken, user_id: userId },
       include: {
         user: { select: { id: true, name: true, email: true, role: true } },
       },
     });
 
-    if (session) {
-      return {
-        id: session.id,
-        accessToken: session.access_token,
-        refreshToken: session.refresh_token,
-        expiresAt: session.expires_at,
-        isActive: session.is_active,
-        createdAt: session.created_at,
-        updatedAt: session.updated_at,
-        user: session.user,
-      };
+    if (!session) {
+      throw new CustomError("Session not found", 404, "SESSION_NOT_FOUND");
     }
 
+    return sessionMapper(session);
+  } catch (error: any) {
     //
-  } catch (error) {
-    //
-    // console.error("Error from repository", error);
-    throw new CustomError("Error al leer la sesion", 500, "SESSION_READ_ERROR");
+    console.error("Error from repository", error?.message || error);
+
+    throw error;
   }
 };
 
 export const finishSession = async (
   sesionId: string
-): Promise<void | SessionResponse> => {
+): Promise<SessionResponse> => {
   try {
     // cambia el estado de la sesion en la base de datos ( is_active: false )
-    const session = await prisma.session.update({
+    const session: SessionWithUser = await prisma.session.update({
       where: { id: sesionId },
       data: {
         is_active: false,
@@ -95,26 +73,11 @@ export const finishSession = async (
       },
     });
 
-    // console.log("sessionUpdated", session);
+    return sessionMapper(session);
+  } catch (error: any) {
+    //
+    console.error("Error from repository", error?.message || error);
 
-    return {
-      id: session.id,
-      user: session.user,
-      accessToken: session.access_token,
-      refreshToken: session.refresh_token,
-      expiresAt: session.expires_at,
-      isActive: session.is_active,
-      createdAt: session.created_at,
-      updatedAt: session.updated_at,
-    };
-    //
-  } catch (error) {
-    //
-    // console.error("Error from repository", error);
-    throw new CustomError(
-      "Error al actualizar la sesion",
-      500,
-      "SESSION_UPDATE_ERROR"
-    );
+    throw error;
   }
 };

@@ -16,7 +16,7 @@ export const errorMiddleware = (
   res: Response<ErrorResponse>,
   _next: NextFunction
 ) => {
-  console.error(err); // Log the error for debugging purposes
+  console.error(err);
 
   // Default response structure
   let response: ErrorResponse = {

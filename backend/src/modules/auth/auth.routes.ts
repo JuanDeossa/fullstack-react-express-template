@@ -15,20 +15,20 @@ const router = express.Router();
 // Ruta pública para registrar un usuario
 router.post(
   "/register",
-  validateSchema(createUserSchema),
+  [validateSchema(createUserSchema)],
   registerUserController
 );
 
 // Ruta pública para iniciar sesión
-router.post("/login", validateSchema(loginSchema), loginController);
+router.post("/login", [validateSchema(loginSchema)], loginController);
 
 // Ruta privada para cerrar sesión
-router.post("/logout", validateRefreshMiddleware, logoutController);
+router.post("/logout", [validateRefreshMiddleware], logoutController);
 
 // Ruta privada para renovar el access token usando el refresh token
 router.post(
   "/refresh-token",
-  validateRefreshMiddleware,
+  [validateRefreshMiddleware],
   refreshTokenController
 );
 

@@ -8,7 +8,7 @@ import {
   finishSession,
   getSessionByRefreshTokenAndUserId,
 } from "../sessions/session.repository";
-import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { envs } from "../../config/envs";
 import { RefreshJwtPayload } from "./auth.interfaces";
 import { generateAccessToken } from "../../utils/token";
@@ -19,10 +19,6 @@ export const loginService = async (
 ): Promise<SessionResponse> => {
   try {
     const user = await getUserByEmail(userData.email);
-
-    if (!user) {
-      throw new CustomError("User not found", 404, "USER_NOT_FOUND");
-    }
 
     const rigthPassword = await bcrypt.compare(
       userData.password,
@@ -42,18 +38,12 @@ export const loginService = async (
 
     return session;
     //
-  } catch (error) {
-    // console.error("Error from service", error);
-    if (error instanceof CustomError) {
-      throw new CustomError(error.message, error.statusCode, error.code);
-    }
+  } catch (error: any) {
+    //
+    console.error("Error from service", error?.message || error);
 
     // Lanza cualquier otro error no manejado
-    throw new CustomError(
-      "Internal server error",
-      500,
-      "INTERNAL_SERVER_ERROR"
-    );
+    throw error;
   }
 };
 
@@ -74,39 +64,23 @@ export const logoutService = async (
       userId
     );
 
-    if (!session) {
-      throw new CustomError("User not found", 404, "USER_NOT_FOUND");
-    }
-
     const sessionClosed = await finishSession(session.id);
-
-    if (!sessionClosed) {
-      throw new CustomError("User not found", 404, "USER_NOT_FOUND");
-    }
 
     return sessionClosed;
     //
-  } catch (error) {
-    // console.error("Error from service", error);
-    if (error instanceof CustomError) {
-      throw new CustomError(error.message, error.statusCode, error.code);
-    }
+  } catch (error: any) {
+    //
+    console.error("Error from service", error?.message || error);
 
     // Lanza cualquier otro error no manejado
-    throw new CustomError(
-      "Internal server error",
-      500,
-      "INTERNAL_SERVER_ERROR"
-    );
+    throw error;
   }
 };
 
 export const refreshTokenService = async (
   refreshToken: string
 ): Promise<{ accessToken: string; user: RefreshJwtPayload["sub"] }> => {
-  //
   try {
-    //
     const decodedToken = jwt.verify(refreshToken, envs.REFRESH_JWT_SECRET);
 
     if (!isRefreshJwtPayload(decodedToken)) {
@@ -135,24 +109,9 @@ export const refreshTokenService = async (
       accessToken: newAccessToken,
       user: decodedToken.sub,
     };
-  } catch (error) {
+  } catch (error: any) {
     //
-    console.error("Error from service", error);
-    if (error instanceof CustomError) {
-      throw new CustomError(error.message, error.statusCode, error.code);
-    }
-
-    if (
-      error instanceof TokenExpiredError ||
-      error instanceof JsonWebTokenError
-    ) {
-      // If the error is related to JWT verification, return a 401
-      throw new CustomError(
-        "Invalid or expired refresh token",
-        401,
-        "INVALID_REFRESH_TOKEN"
-      );
-    }
+    console.error("Error from service: ", error?.message || error);
 
     // Lanza cualquier otro error no manejado
     throw error;

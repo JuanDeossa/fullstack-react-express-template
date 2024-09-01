@@ -9,9 +9,10 @@ export const validateAccessMiddleware = (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers["authorization"]?.split(" ")[1];
+    const accessToken: string | undefined =
+      req.headers["authorization"]?.split(" ")[1];
 
-    if (!token) {
+    if (!accessToken) {
       throw new CustomError(
         "No access token provided",
         401,
@@ -19,11 +20,17 @@ export const validateAccessMiddleware = (
       );
     }
 
-    jwt.verify(token, envs.ACCESS_JWT_SECRET);
+    jwt.verify(accessToken, envs.ACCESS_JWT_SECRET);
+
     // Continúa con el siguiente middleware o la ruta
     next();
-  } catch (error) {
-    // console.error("Error from auth middleware ( access token ): ", error);
+  } catch (error: any) {
+    //
+    console.error(
+      "Error from auth middleware ( access token ): ",
+      error?.message || error
+    );
+
     next(error);
   }
 };
@@ -34,7 +41,7 @@ export const validateRefreshMiddleware = (
   next: NextFunction
 ) => {
   try {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken: string | undefined = req.cookies.refreshToken;
 
     if (!refreshToken) {
       throw new CustomError(
@@ -45,10 +52,17 @@ export const validateRefreshMiddleware = (
     }
 
     jwt.verify(refreshToken, envs.REFRESH_JWT_SECRET);
+
     // Continúa con el siguiente middleware o la ruta
     next();
     //
-  } catch (error) {
+  } catch (error: any) {
+    //
+    console.error(
+      "Error from auth middleware ( refresh token ): ",
+      error?.message || error
+    );
+
     if (
       error instanceof TokenExpiredError ||
       error instanceof JsonWebTokenError
@@ -66,6 +80,7 @@ export const validateRefreshMiddleware = (
         "INVALID_REFRESH_TOKEN"
       );
     }
+
     next(error);
   }
 };

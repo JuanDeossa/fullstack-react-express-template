@@ -52,12 +52,12 @@ export const UserForm = ({ fetchUsers }: UserFormProps) => {
         type="password"
         autoComplete="new-password"
       />
-      {/* <input
+      <input
         className="border border-gray-400 rounded-md pl-3"
         {...register("name", { required: false })}
         placeholder="Name"
         type="text"
-      /> */}
+      />
       <button
         type="submit"
         className="border border-gray-400 rounded-md bg-gray-400 p-1 font-semibold"

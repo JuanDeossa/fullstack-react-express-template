@@ -1,5 +1,4 @@
 import { CreateUserType } from "./users.schemas";
-import { UserResponse } from "./user.interfaces";
 import { CustomError } from "../../utils/errorHandler";
 import { createUser, deleteUser, getUsers } from "./users.repository";
 import bcrypt from "bcrypt";
@@ -7,7 +6,7 @@ import { User } from "./user.interfaces";
 
 export const createUserService = async (
   userData: CreateUserType
-): Promise<UserResponse> => {
+): Promise<User> => {
   try {
     // Hash de la contraseña
     const saltRounds = 10;
@@ -17,22 +16,18 @@ export const createUserService = async (
     const user = await createUser({
       email: userData.email,
       password: hashedPassword,
+      name: userData.name,
     });
 
-    return {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-      createdAt: user.created_at,
-      updatedAt: user.updated_at,
-      deletedAt: user.deleted_at,
-    };
+    return user;
     //
-  } catch (error) {
-    // console.error("Error from service", error);
+  } catch (error: any) {
+    //
     if (error instanceof CustomError) {
-      throw new CustomError(error.message, error.statusCode, error.code);
+      throw error;
     }
+
+    console.error("Error from service", error?.message || error);
 
     // Lanza cualquier otro error no manejado
     throw new CustomError(
@@ -69,7 +64,14 @@ export const deleteUserService = async (id: string) => {
   try {
     await deleteUser(id);
     return true;
-  } catch (error) {
+  } catch (error: any) {
+    //
+    if (error instanceof CustomError) {
+      throw error;
+    }
+
+    console.error("Error from service", error?.message || error);
+
     // Lanza cualquier otro error no manejado
     throw new CustomError(
       "Internal server error",
