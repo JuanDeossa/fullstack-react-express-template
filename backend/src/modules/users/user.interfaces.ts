@@ -1,5 +1,8 @@
-// src/types/user.ts
-// src/types/user.ts
+import { User as PrismaUser } from "@prisma/client";
+
+export type User = PrismaUser;
+
+export interface PublicUser extends Omit<User, "password"> {}
 
 export interface BaseUser {
   email: string;

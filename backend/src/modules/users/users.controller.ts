@@ -5,6 +5,7 @@ import {
   getUsersService,
 } from "./users.service";
 import { CreateUserType } from "./users.schemas";
+import { PublicUser } from "./user.interfaces";
 
 export const createUserController = async (
   req: Request<{}, {}, CreateUserType>,
@@ -35,14 +36,29 @@ export const createUserController = async (
   }
 };
 
-export const getUsersController = async (_req: Request, res: Response) => {
+export const getUsersController = async (
+  _req: Request,
+  res: Response<PublicUser[]>,
+  next: NextFunction
+) => {
   //
   try {
+    //
     const users = await getUsersService();
 
-    return res.status(200).json(users);
+    const publicUsers: PublicUser[] = users.map((user) => ({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      created_at: user.created_at,
+      deleted_at: user.deleted_at,
+      name: user.name,
+      updated_at: user.updated_at,
+    }));
+
+    res.status(200).json(publicUsers);
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    next(error);
   }
 };
 

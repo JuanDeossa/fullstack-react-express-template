@@ -1,11 +1,9 @@
 import { CreateUserType } from "./users.schemas";
-import {
-  UserResponse,
-  UserResponseWithPassword,
-} from "./user.interfaces";
+import { UserResponse } from "./user.interfaces";
 import { CustomError } from "../../utils/errorHandler";
 import { createUser, deleteUser, getUsers } from "./users.repository";
 import bcrypt from "bcrypt";
+import { User } from "./user.interfaces";
 
 export const createUserService = async (
   userData: CreateUserType
@@ -45,13 +43,19 @@ export const createUserService = async (
   }
 };
 
-export const getUsersService = async (): Promise<
-  void | UserResponseWithPassword[]
-> => {
+export const getUsersService = async (): Promise<User[]> => {
   try {
+    //
     const users = await getUsers();
     return users;
-  } catch (error) {
+  } catch (error: any) {
+    //
+    if (error instanceof CustomError) {
+      throw error;
+    }
+
+    console.error("Error from service", error?.message || error);
+
     // Lanza cualquier otro error no manejado
     throw new CustomError(
       "Internal server error",

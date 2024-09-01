@@ -1,12 +1,13 @@
 // src/middleware/errorMiddleware.ts
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
+import { CustomError } from "../utils/errorHandler";
 
 interface ErrorResponse {
   status: string;
   message: string;
-  errors?: { field?: string | number; message: string }[];
-  code?: string;
+  errors: { field: string | number; message: string }[];
+  code: string;
 }
 
 export const errorMiddleware = (
@@ -40,17 +41,17 @@ export const errorMiddleware = (
   }
 
   // Custom Application Errors
-  if (err.statusCode) {
+  if (err instanceof CustomError) {
     response = {
       status: "error",
       message: err.message,
       code: err.code || "APPLICATION_ERROR",
-      errors: err.errors || [],
+      errors: [],
     };
     return res.status(err.statusCode).json(response);
   }
 
-  // validar error de verificacion de token
+  // Validar error de verificacion de token
   if (err.name === "JsonWebTokenError") {
     response = {
       status: "error",
@@ -60,7 +61,7 @@ export const errorMiddleware = (
     };
     return res.status(401).json(response);
   }
-  // validar error de token expirado de jwt
+  // Validar error de token expirado de jwt
   if (err.name === "TokenExpiredError") {
     response = {
       status: "error",

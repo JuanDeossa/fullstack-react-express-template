@@ -2,7 +2,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { CustomError } from "../../utils/errorHandler";
 import { PrismaClient } from "@prisma/client";
 import { CreateUserType } from "./users.schemas";
-import { UserResponseWithPassword } from "./user.interfaces";
+import { User, UserResponseWithPassword } from "./user.interfaces";
 import { LoginType } from "../auth/auth.schemas";
 
 const prisma = new PrismaClient();
@@ -43,29 +43,16 @@ export const createUser = async (userData: CreateUserType) => {
   }
 };
 
-export const getUsers = async (): Promise<
-  void | UserResponseWithPassword[]
-> => {
+export const getUsers = async (): Promise<User[]> => {
   try {
-    // Busca el usuario en la base de datos
+    // Busca todos los usuarios en la base de datos
     const users = await prisma.user.findMany();
+    return users;
+  } catch (error: any) {
+    //
+    console.error("Error from repository", error?.message || error);
 
-    if (users) {
-      return users.map((user) => ({
-        id: user.id,
-        email: user.email,
-        password: user.password,
-        role: user.role,
-        createdAt: user.created_at,
-        updatedAt: user.updated_at,
-        deletedAt: user.deleted_at,
-        name: user.name || "",
-      }));
-    }
-    //
-  } catch (error) {
-    //
-    throw new CustomError("Error al leer los usuarios", 500, "USER_READ_ERROR");
+    throw error;
   }
 };
 
