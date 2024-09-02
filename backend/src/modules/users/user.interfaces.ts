@@ -1,6 +1,8 @@
-import { User as PrismaUser } from "@prisma/client";
+import { User as PrismaUser, Role as PrismaRole } from "@prisma/client";
 
 export type User = PrismaUser;
+
+export type Role = PrismaRole;
 
 export interface PublicUser extends Omit<User, "password"> {}
 

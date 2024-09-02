@@ -10,7 +10,9 @@ export const AppContent = () => {
   useEffect(() => {
     if (user?.token) {
       setupInterceptors(
-        () => user.token,
+        () => {
+          return user.token;
+        },
         (newToken) =>
           setUser((prev) => {
             return prev ? { ...prev, token: newToken } : null;

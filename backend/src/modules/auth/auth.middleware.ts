@@ -20,7 +20,9 @@ export const validateAccessMiddleware = (
       );
     }
 
-    jwt.verify(accessToken, envs.ACCESS_JWT_SECRET);
+    const payload = jwt.verify(accessToken, envs.ACCESS_JWT_SECRET);
+
+    req.body.payload = payload;
 
     // Continúa con el siguiente middleware o la ruta
     next();

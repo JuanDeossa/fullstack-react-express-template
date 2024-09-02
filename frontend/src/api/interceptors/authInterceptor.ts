@@ -17,7 +17,10 @@ export const setupInterceptors = (
   updateToken: (token: string | null) => void
 ) => {
   privateAxios.interceptors.request.use((config) => {
-    const token = getToken_() || getToken(); // Obtenemos el token actual usando la función que recibe como argumento
+    const token1 = getToken_();
+    const token2 = getToken();
+
+    const token = token1 || token2;
 
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
@@ -27,7 +30,15 @@ export const setupInterceptors = (
   });
 
   privateAxios.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      if (response.status === 200 && response.data.code === "LOGOUT_SUCCESS") {
+        setToken_(null);
+        updateToken(null);
+        window.location.href = "/";
+      }
+
+      return response;
+    },
     async (error) => {
       const originalRequest = error.config;
 

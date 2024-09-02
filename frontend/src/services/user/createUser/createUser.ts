@@ -13,7 +13,7 @@ export const createUser = async ({ email, password, name }: CreateUser) => {
         withCredentials: true,
       }
     );
-    const user = response.data as UserResponse;
+    const user = response.data.data as UserResponse;
     return user;
   } catch (error) {
     console.error(error);
