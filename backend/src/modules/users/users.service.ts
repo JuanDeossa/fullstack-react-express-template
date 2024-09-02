@@ -1,13 +1,23 @@
 import { CreateUserType } from "./users.schemas";
 import { CustomError } from "../../utils/errorHandler";
-import { createUser, deleteUser, getUsers } from "./users.repository";
+import {
+  createUser,
+  deleteUser,
+  getUserById,
+  getUsers,
+} from "./users.repository";
 import bcrypt from "bcrypt";
 import { User } from "./user.interfaces";
+import { userRoleGuard } from "../../utils/userRole.guard";
 
 export const createUserService = async (
-  userData: CreateUserType
+  userData: CreateUserType,
+  subRole: string
 ): Promise<User> => {
   try {
+    // Return early if sub role is not allowed to create a user role
+    userRoleGuard(subRole, userData.role);
+
     // Hash de la contraseña
     const saltRounds = 10;
 
@@ -17,6 +27,7 @@ export const createUserService = async (
       email: userData.email,
       password: hashedPassword,
       name: userData.name,
+      role: userData.role,
     });
 
     return user;
@@ -60,8 +71,14 @@ export const getUsersService = async (): Promise<User[]> => {
   }
 };
 
-export const deleteUserService = async (id: string) => {
+export const deleteUserService = async (id: string, subRole: string) => {
+  //
   try {
+    const user = await getUserById(id);
+
+    // Return early if sub role is not allowed to create a user role
+    userRoleGuard(subRole, user.role);
+
     await deleteUser(id);
     return true;
   } catch (error: any) {

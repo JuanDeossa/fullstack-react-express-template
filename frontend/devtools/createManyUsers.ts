@@ -1,4 +1,5 @@
 import { createUser } from "../src/services";
+import { UserRole } from "../src/types/user/user.interfaces";
 
 export const createManyUsers = async (
   quantity = 10,
@@ -18,6 +19,7 @@ export const createManyUsers = async (
       name: email.split("@")[0],
       email: email,
       password: "123456",
+      role: UserRole.USER,
     });
   }
 

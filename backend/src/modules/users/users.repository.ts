@@ -14,6 +14,7 @@ export const createUser = async (userData: CreateUserType) => {
       email: userData.email,
       password: userData.password,
       name: userData.name,
+      role: userData.role,
     };
 
     // Crea el usuario en la base de datos
@@ -61,6 +62,23 @@ export const getUserByEmail = async (
   try {
     // Busca el usuario en la base de datos
     const user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      throw new CustomError("User not found", 404, "USER_NOT_FOUND");
+    }
+
+    return user;
+    //
+  } catch (error) {
+    //
+    throw error;
+  }
+};
+
+export const getUserById = async (id: string): Promise<User> => {
+  try {
+    // Busca el usuario en la base de datos
+    const user = await prisma.user.findUnique({ where: { id } });
 
     if (!user) {
       throw new CustomError("User not found", 404, "USER_NOT_FOUND");

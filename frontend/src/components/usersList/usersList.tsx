@@ -20,7 +20,9 @@ export const UsersList = ({ users, fetchUsers }: UsersListProps) => {
 
   return (
     <div className="UsersList flex flex-col gap-2.5">
-      <h2 className="text-xl font-semibold text-red-500">Usuarios actuales: <b>{users.length}</b></h2>
+      <h2 className="text-xl font-semibold text-red-500">
+        Usuarios actuales: <b>{users.length}</b>
+      </h2>
       <UserCardHeader />
       <div className="flex flex-col gap-1.5 max-h-[70vh] overflow-y-auto">
         {users.length === 0 ? (
@@ -29,6 +31,7 @@ export const UsersList = ({ users, fetchUsers }: UsersListProps) => {
           </span>
         ) : (
           users
+            .filter((user) => user.role !== "DEVELOPER")
             .sort((a, b) => a.role.localeCompare(b.role))
             .map((user) => (
               <UserCard
@@ -71,18 +74,16 @@ const UserCard = ({
         </span>
       </span>
       <span className="w-10">
-        {!["SUPER_ADMIN", "DEVELOPER"].includes(user?.role || "") && (
-          <button
-            onClick={() => {
-              if (user) {
-                handleDeleteUser(user.id);
-              }
-            }}
-            className="cursor-pointer"
-          >
-            {!isHeader ? "❌" : ""}
-          </button>
-        )}
+        <button
+          onClick={() => {
+            if (user) {
+              handleDeleteUser(user.id);
+            }
+          }}
+          className="cursor-pointer"
+        >
+          {!isHeader ? "❌" : ""}
+        </button>
       </span>
     </div>
   );

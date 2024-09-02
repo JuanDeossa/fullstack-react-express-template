@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateUserType } from "../users/users.schemas";
 import { createUserService } from "../users/users.service";
 import { LoginType } from "./auth.schemas";
 import {
@@ -9,16 +8,20 @@ import {
 } from "./auth.services";
 import { envs } from "../../config/envs";
 import { PublicUser } from "../users/user.interfaces";
+import { CreateUserTypeWithSub } from "../users/users.schemas";
 
 export const registerUserController = async (
-  req: Request<{}, {}, CreateUserType>,
+  req: Request<{}, {}, CreateUserTypeWithSub>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, name, role, payload } = req.body;
 
-    const user = await createUserService({ email, password, name });
+    const user = await createUserService(
+      { email, password, name, role },
+      payload.sub.role
+    );
 
     const publicUser: PublicUser = {
       id: user.id,

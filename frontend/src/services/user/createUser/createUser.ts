@@ -2,13 +2,18 @@ import { usersUrl } from "../../../api/paths";
 import { CreateUser, UserResponse } from "../../../types";
 import { privateAxios } from "../../../api/axios";
 
-export const createUser = async ({ email, password, name }: CreateUser) => {
+export const createUser = async ({
+  email,
+  password,
+  name,
+  role,
+}: CreateUser) => {
   //
   try {
     //Axios
     const response = await privateAxios.post(
       usersUrl,
-      { email, password, name },
+      { email, password, name, role },
       {
         withCredentials: true,
       }

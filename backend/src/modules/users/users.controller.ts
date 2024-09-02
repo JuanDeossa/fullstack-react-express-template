@@ -4,18 +4,23 @@ import {
   deleteUserService,
   getUsersService,
 } from "./users.service";
-import { CreateUserType } from "./users.schemas";
+import { CreateUserTypeWithSub } from "./users.schemas";
 import { PublicUser } from "./user.interfaces";
 
 export const createUserController = async (
-  req: Request<{}, {}, CreateUserType>,
+  req: Request<{}, {}, CreateUserTypeWithSub>,
   res: Response,
   next: NextFunction
 ) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, role, payload } = req.body;
+
+  const subRole: string = payload.sub.role;
 
   try {
-    const user = await createUserService({ email, password, name });
+    const user = await createUserService(
+      { email, password, name, role },
+      subRole
+    );
 
     const publicUser: PublicUser = {
       id: user.id,
@@ -78,8 +83,11 @@ export const deleteUserController = async (
   //
   try {
     const { id } = req.params;
+    const { payload } = req.body;
 
-    await deleteUserService(id);
+    const subRole: string = payload.sub.role;
+
+    await deleteUserService(id, subRole);
 
     res.status(204).send();
   } catch (error) {
