@@ -4,7 +4,8 @@ export type User = PrismaUser;
 
 export type Role = PrismaRole;
 
-export interface PublicUser extends Omit<User, "password"> {}
+export interface PublicUser
+  extends Omit<User, "password" | "deleted_at" | "deleted_by"> {}
 
 export interface BaseUser {
   email: string;

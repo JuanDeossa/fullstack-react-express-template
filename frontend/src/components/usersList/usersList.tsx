@@ -31,7 +31,6 @@ export const UsersList = ({ users, fetchUsers }: UsersListProps) => {
           </span>
         ) : (
           users
-            .filter((user) => user.role !== "DEVELOPER")
             .sort((a, b) => a.role.localeCompare(b.role))
             .map((user) => (
               <UserCard

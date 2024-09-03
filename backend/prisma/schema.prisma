@@ -29,6 +29,8 @@ model User {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+  deleted_by String?
+  is_active  Boolean   @default(true)
   Session    Session[]
 
   @@index([email])

@@ -1,4 +1,5 @@
 import { CreateUserType } from "./users.schemas";
+import { Role } from "./user.interfaces";
 import { CustomError } from "../../utils/errorHandler";
 import {
   createUser,
@@ -49,20 +50,44 @@ export const createUserService = async (
   }
 };
 
-export const getUsersService = async (): Promise<User[]> => {
+export const getUsersService = async (subRole: Role): Promise<User[]> => {
   try {
     //
-    const users = await getUsers();
+    const dbUsers = await getUsers();
+
+    let users: User[] = [];
+
+    switch (subRole) {
+      case "DEVELOPER":
+        users = dbUsers.filter((user) => !["DEVELOPER"].includes(user.role));
+        break;
+      case "SUPER_ADMIN":
+        users = dbUsers.filter(
+          (user) => !["DEVELOPER", "SUPER_ADMIN"].includes(user.role)
+        );
+        break;
+      case "ADMIN":
+        users = dbUsers.filter(
+          (user) => !["DEVELOPER", "SUPER_ADMIN", "ADMIN"].includes(user.role)
+        );
+        break;
+      case "USER":
+        throw new CustomError("Unauthorized role", 403, "UNAUTHORIZED_ROLE");
+        break;
+
+      default:
+        break;
+    }
+
     return users;
   } catch (error: any) {
     //
+    console.error("Error from service", error?.message || error);
+
     if (error instanceof CustomError) {
       throw error;
     }
 
-    console.error("Error from service", error?.message || error);
-
-    // Lanza cualquier otro error no manejado
     throw new CustomError(
       "Internal server error",
       500,
@@ -71,7 +96,11 @@ export const getUsersService = async (): Promise<User[]> => {
   }
 };
 
-export const deleteUserService = async (id: string, subRole: string) => {
+export const deleteUserService = async (
+  id: string,
+  subRole: string,
+  subEmail: string
+) => {
   //
   try {
     const user = await getUserById(id);
@@ -79,7 +108,7 @@ export const deleteUserService = async (id: string, subRole: string) => {
     // Return early if sub role is not allowed to create a user role
     userRoleGuard(subRole, user.role);
 
-    await deleteUser(id);
+    await deleteUser(id, subEmail);
     return true;
   } catch (error: any) {
     //

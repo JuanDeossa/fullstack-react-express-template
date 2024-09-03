@@ -92,12 +92,12 @@ export const getUserById = async (id: string): Promise<User> => {
   }
 };
 
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (id: string, subEmail: string) => {
   try {
     // Elimina el usuario en la base de datos
     const user = await prisma.user.update({
       where: { id },
-      data: { deleted_at: new Date() },
+      data: { deleted_at: new Date(), deleted_by: subEmail, is_active: false },
     });
 
     return user;
