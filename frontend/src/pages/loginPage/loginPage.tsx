@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { LoginForm } from "./loginForm";
-import { paths } from "../routes/paths";
+import { useAuth } from "../../hooks/useAuth";
+import { paths } from "../../routes/paths";
+import { LoginForm } from "@/components";
 
 export const LoginPage = () => {
   //

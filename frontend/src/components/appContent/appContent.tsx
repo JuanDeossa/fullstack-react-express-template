@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { setupInterceptors } from "../api/interceptors/authInterceptor";
-import { AppRouter } from "../routes/appRouter";
+import { useAuth } from "../../hooks/useAuth";
+import { setupInterceptors } from "../../api/interceptors/authInterceptor";
+import { AppRouter } from "../../routes/appRouter";
 
 export const AppContent = () => {
   //

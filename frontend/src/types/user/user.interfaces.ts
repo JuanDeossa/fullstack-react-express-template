@@ -18,4 +18,5 @@ export interface UserResponse {
   password: string;
   name: string;
   role: string;
+  is_active: boolean;
 }

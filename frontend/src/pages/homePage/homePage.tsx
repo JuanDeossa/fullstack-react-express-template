@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { paths } from "../routes/paths";
+import { paths } from "../../routes/paths";
 
-export const Home = () => {
+export const HomePage = () => {
   //
   return (
     <div className="home">

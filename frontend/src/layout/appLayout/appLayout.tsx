@@ -1,4 +1,4 @@
-import { AppHeader } from "../../components/appHeader/appHeader";
+import { AppHeader } from "@/components";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   //

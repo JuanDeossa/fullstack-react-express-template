@@ -1,5 +1,5 @@
 import { AuthProvider } from "./context/authProvider";
-import { AppContent } from "./components/appContent";
+import { AppContent } from "./components";
 
 export const App = () => {
   //

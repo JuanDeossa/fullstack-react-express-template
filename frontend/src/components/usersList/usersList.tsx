@@ -1,5 +1,7 @@
 import { deleteUser } from "../../services";
 import { UserResponse } from "../../types";
+import { DeleteUserModal } from "../common";
+import { throwErrorAlert, throwSuccessAlert } from "@/utils/alerts";
 
 interface UsersListProps {
   users: UserResponse[];
@@ -11,10 +13,10 @@ export const UsersList = ({ users, fetchUsers }: UsersListProps) => {
   const handleDeleteUser = async (id: string) => {
     const success = await deleteUser(id);
     if (!success) {
-      alert("No se pudo eliminar el usuario");
+      throwErrorAlert("No se pudo eliminar el usuario");
     } else {
       fetchUsers();
-      alert("Usuario eliminado: " + id);
+      throwSuccessAlert("Usuario eliminado correctamente");
     }
   };
 
@@ -68,21 +70,24 @@ const UserCard = ({
         <span className="w-32 overflow-hidden truncate font-bold">
           {!isHeader ? user?.role : "Rol"}
         </span>
+        <span className="w-32 overflow-hidden truncate font-bold text-center">
+          {!isHeader ? (user?.is_active ? "✔️" : "✖️") : "Activo"}
+        </span>
         <span className="w-56 overflow-hidden truncate font-semibold">
           {!isHeader ? user?.email : "Email"}
         </span>
       </span>
       <span className="w-10">
-        <button
-          onClick={() => {
-            if (user) {
-              handleDeleteUser(user.id);
-            }
-          }}
-          className="cursor-pointer"
-        >
-          {!isHeader ? "❌" : ""}
-        </button>
+        {!isHeader && (
+          <DeleteUserModal
+            email={user?.email || ""}
+            onConfirm={() => {
+              if (user) {
+                handleDeleteUser(user.id);
+              }
+            }}
+          />
+        )}
       </span>
     </div>
   );

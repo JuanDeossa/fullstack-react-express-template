@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { UserForm, UsersList } from "../";
+import { UserForm, UsersList } from "@/components";
 import { getUsers } from "../../services";
 import { UserResponse } from "../../types/user/user.interfaces";
 import { createManyUsers, deleteAllUsers } from "../../../devtools";
 import { envs } from "../../config/envs";
+import { Toaster } from "sonner";
 
 export const AdminUsersPage = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
@@ -81,6 +82,8 @@ export const AdminUsersPage = () => {
           )}
         </div>
         <UsersList users={users} fetchUsers={fetchUsers} />
+        {/* <Alert /> */}
+        <Toaster />
       </div>
     </div>
   );

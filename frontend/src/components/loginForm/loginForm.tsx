@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
-import { envs } from "../config/envs";
-import { useAuth } from "../hooks/useAuth";
-import { loginService } from "../api/services";
-import { useNav } from "../hooks/useNav";
-import { paths } from "../routes/paths";
+import { envs } from "../../config/envs";
+import { useAuth } from "../../hooks/useAuth";
+import { loginService } from "../../api/services";
+import { useNav } from "../../hooks/useNav";
+import { paths } from "../../routes/paths";
 
 export const LoginForm = () => {
   //
