@@ -28,8 +28,8 @@ export const UsersList = ({ users, fetchUsers }: UsersListProps) => {
       <UserCardHeader />
       <div className="flex flex-col gap-1.5 max-h-[70vh] overflow-y-auto">
         {users.length === 0 ? (
-          <span className="text-gray-600 font-semibold text-lg border rounded-md bg-gray-50 border-gray-300 py-2 px-4">
-            No hay usuarios registrados en el sistema
+          <span className="text-gray-600 font-semibold text-lg border rounded-md bg-gray-50 border-gray-300 py-2 px-4 text-center">
+            No hay usuarios disponibles.
           </span>
         ) : (
           users

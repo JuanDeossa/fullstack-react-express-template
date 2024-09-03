@@ -20,6 +20,14 @@ export const loginService = async (
   try {
     const user = await getUserByEmail(userData.email);
 
+    if (!user.is_active) {
+      throw new CustomError(
+        "Usuario inactivo, contacte al administrador",
+        400,
+        "USER_NOT_ACTIVE"
+      );
+    }
+
     const rigthPassword = await bcrypt.compare(
       userData.password,
       user.password

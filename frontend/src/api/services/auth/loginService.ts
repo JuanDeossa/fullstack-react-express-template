@@ -1,3 +1,4 @@
+import { throwErrorAlert } from "@/utils/alerts";
 import { User } from "../../../types/user";
 import { publicAxios } from "../../axios";
 import { authUrl } from "../../paths";
@@ -40,8 +41,11 @@ export const loginService = async ({
       name: data.user.name,
       role: data.user.role,
     };
-  } catch (error) {
-    console.error(error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message || "Error de inicio de sesión";
+    throwErrorAlert(message);
 
     return null;
   }
