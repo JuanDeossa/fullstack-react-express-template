@@ -20,6 +20,14 @@ export const loginService = async (
   try {
     const user = await getUserByEmail(userData.email);
 
+    if (user.deleted_at !== null) {
+      throw new CustomError(
+        "credenciales incorrectas",
+        404,
+        "VALIDATION_ERROR"
+      );
+    }
+
     if (!user.is_active) {
       throw new CustomError(
         "Usuario inactivo, contacte al administrador",
@@ -34,7 +42,11 @@ export const loginService = async (
     );
 
     if (!rigthPassword) {
-      throw new CustomError("Invalid credentials", 400, "VALIDATION_ERROR");
+      throw new CustomError(
+        "credenciales incorrectas",
+        400,
+        "VALIDATION_ERROR"
+      );
     }
 
     const session = await createSessionService({
