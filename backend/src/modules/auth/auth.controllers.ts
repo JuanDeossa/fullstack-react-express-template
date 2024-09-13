@@ -58,7 +58,7 @@ export const loginController = async (
     res.cookie("refreshToken", session.refreshToken, {
       httpOnly: true, // Evita el acceso desde JavaScript
       secure: process.env.NODE_ENV === "production", // Solo se envía sobre HTTPS
-      sameSite: "strict", // Previene ataques CSRF
+      sameSite: "none", // Previene ataques CSRF
       maxAge: envs.REFRESH_TOKEN_EXPIRES_IN,
     });
 
