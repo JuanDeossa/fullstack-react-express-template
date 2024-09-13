@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve dist"
+    "start": "serve -s dist"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.1",
