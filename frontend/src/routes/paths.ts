@@ -4,4 +4,5 @@ export const paths = Object.freeze({
   ROOT: "/",
   HOME: "/home",
   ADMIN_USERS: "/admin-users",
+  PLAYGROUND: "/playground",
 });

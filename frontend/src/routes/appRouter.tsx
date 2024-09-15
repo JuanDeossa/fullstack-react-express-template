@@ -3,6 +3,7 @@ import { PrivateRoutes } from "./privateRoutes";
 import { User } from "../types/user";
 import { paths } from "./paths";
 import { AdminUsersPage, LoginPage, HomePage } from "@/pages";
+import { PlaygroundPage } from "@/pages/playgroundPage/playgroundPage";
 
 interface Props {
   user: User | null;
@@ -19,6 +20,7 @@ export const AppRouter = ({ user }: Props) => {
           </Route>
           <Route path={paths.ROOT} element={<LoginPage />} />
           <Route path={paths.LOGIN} element={<LoginPage />} />
+          <Route path={paths.PLAYGROUND} element={<PlaygroundPage />} />
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
       }
