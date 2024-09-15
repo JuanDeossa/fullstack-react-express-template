@@ -5,14 +5,12 @@
   "type": "module",
   "scripts": {
     "start:dev": "vite",
-    "start:docker": "vite --host",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "start": "serve -s dist",
-    "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "build": "tsc -b && vite build",
+    "coverage": "vitest run --coverage",
+    "test": "vitest",
+    "start": "serve -s dist",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
