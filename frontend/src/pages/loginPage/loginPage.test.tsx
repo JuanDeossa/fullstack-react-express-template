@@ -11,8 +11,6 @@ import { paths } from "@/routes/paths";
 
 const mockNavigate = vi.fn();
 
-vi.mock("@/api/services");
-
 vi.mock("@/hooks/useNav", () => ({
   useNav: () => ({ navigate: mockNavigate }),
 }));
@@ -38,7 +36,7 @@ vi.mock("@/components/loginForm/loginForm", () => ({
 }));
 
 vi.mock("@/components/common/loaders/spinner/spinner", () => ({
-  Spinner: () => <span data-testid="spinner">data-testid</span>,
+  Spinner: () => <span data-testid="spinner">Spinner</span>,
 }));
 
 describe("HomePage", () => {
@@ -69,6 +67,11 @@ describe("HomePage", () => {
   });
 
   it("should show the spinner when loading", async () => {
+    //
+    vi.mock("@/api/services/auth/loginService", () => ({
+      loginService: vi.fn(() => new Promise(() => {})), // Promesa pendiente
+    }));
+
     // Estado inicial
     const { formButton, user } = renderComponent();
 
@@ -89,7 +92,16 @@ describe("HomePage", () => {
     (loginService as Mock).mockResolvedValue({
       status: "success",
       message: "Login exitoso",
-      data: { id: 1, name: "Test User" },
+      data: {
+        // Asegúrate de que esta estructura coincide con lo que se espera en el código
+        user: {
+          id: "1",
+          email: "test@test.com",
+          name: "Test User",
+          role: "user",
+        },
+        token: "fake_token",
+      },
     });
 
     // Estado inicial
@@ -109,5 +121,11 @@ describe("HomePage", () => {
       path: paths.HOME,
       replace: false,
     });
+
+    // Verificamos que el spinner no aparece en el DOM
+    expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
+
+    // Verificamos que el formulario ya no está presente en el DOM
+    expect(formButton).not.toBeInTheDocument();
   });
 });
