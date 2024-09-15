@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useRefreshToken } from "../hooks/useRefreshToken";
+import { useRefreshToken } from "../hooks";
 import { AppLayout } from "../layout/appLayout/appLayout";
 
 interface Props {
@@ -20,5 +20,5 @@ export const PrivateRoutes = ({
     return <Navigate to={redirectTo} />;
   }
 
-  return <AppLayout>{children ? children : <Outlet />}</AppLayout>;
+  return <AppLayout>{children || <Outlet />}</AppLayout>;
 };

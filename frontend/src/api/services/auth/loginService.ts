@@ -1,5 +1,4 @@
-import { throwErrorAlert } from "@/utils/alerts";
-import { User } from "../../../types/user";
+import { ServiceResponse } from "@/types";
 import { publicAxios } from "../../axios";
 import { authUrl } from "../../paths";
 
@@ -19,7 +18,7 @@ export const loginService = async ({
 }: {
   email: string;
   password: string;
-}): Promise<User | null> => {
+}): Promise<ServiceResponse> => {
   try {
     const { data: resData } = await publicAxios.post(
       `${authUrl}/login`,
@@ -35,18 +34,16 @@ export const loginService = async ({
     const data = resData.data as LoginDataResponse;
 
     return {
-      token: data.token,
-      id: data.user.id,
-      email: data.user.email,
-      name: data.user.name,
-      role: data.user.role,
+      status: "success",
+      message: "Login exitoso",
+      data: data,
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    const message =
-      error?.response?.data?.message || "Error de inicio de sesión";
-    throwErrorAlert(message);
-
-    return null;
+    return {
+      status: "error",
+      message: error?.response?.data?.message || "Error de inicio de sesión",
+      data: null,
+    };
   }
 };

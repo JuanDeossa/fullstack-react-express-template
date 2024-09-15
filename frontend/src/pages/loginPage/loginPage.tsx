@@ -1,55 +1,50 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import { paths } from "../../routes/paths";
-import { Toaster } from "sonner";
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
+import { Toaster } from "sonner";
+
 import { loginService } from "@/api/services";
-import { useNav } from "@/hooks/useNav";
-import { Spinner } from "@/components/common/loaders/spinner/spinner";
-import { LoginForm } from "@/components";
+import { useAuth, useNav } from "@/hooks";
+import { LoginForm, Spinner } from "@/components";
+import { throwErrorAlert } from "@/utils/alerts";
+import { paths } from "@/routes/paths";
 
 export const LoginPage = () => {
   //
-  const { navigate } = useNav();
-
   const [isLoading, setIsLoading] = useState(false);
+
+  const { navigate } = useNav();
+  const { user, login } = useAuth();
 
   const handleLogin = async (data: { email: string; password: string }) => {
     setIsLoading(true);
 
-    const user = await loginService({
+    const { data: user, message } = await loginService({
       email: data?.email || "",
       password: data?.password || "",
     });
 
     setIsLoading(false);
 
-    if (!user) return;
+    if (!user) {
+      throwErrorAlert(message);
+      return;
+    }
 
     login(user);
 
     navigate({ path: paths.HOME, replace: false });
   };
 
-  const { user, login } = useAuth();
-
   if (user) {
     return <Navigate to={paths.HOME} replace />;
-  }
-
-  if (isLoading) {
-    return (
-      <div className="LoginPage-loader min-h-screen bg-gray-50 grid place-content-center">
-        <Spinner />
-      </div>
-    );
   }
 
   return (
     <>
       <div className="LoginPage min-h-screen bg-gray-50 grid place-content-center">
-        <LoginForm onSubmit={handleLogin} />
+        {isLoading ? <Spinner /> : <LoginForm onSubmit={handleLogin} />}
       </div>
+
       <Toaster />
     </>
   );
