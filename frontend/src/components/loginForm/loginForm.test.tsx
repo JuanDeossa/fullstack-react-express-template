@@ -1,6 +1,4 @@
-import { AuthContext } from "@/context/authContext";
 import { render, screen } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
 import { describe } from "node:test";
 import { expect, it, vi } from "vitest";
 
@@ -18,13 +16,7 @@ describe("form", () => {
   const renderComponent = () => {
     const onSubmit = vi.fn();
 
-    render(
-      <AuthContext.Provider value={{ user: null, setUser: () => {} }}>
-        <BrowserRouter>
-          <LoginForm onSubmit={onSubmit} />
-        </BrowserRouter>
-      </AuthContext.Provider>
-    );
+    render(<LoginForm onSubmit={onSubmit} />);
 
     const emailInput = screen.getByLabelText("Email");
     const passwordInput = screen.getByLabelText("Password");
