@@ -12,13 +12,17 @@ interface LoginDataResponse {
   };
 }
 
+interface LoginResponse extends ServiceResponse {
+  data: LoginDataResponse | null;
+}
+
 export const loginService = async ({
   email,
   password,
 }: {
   email: string;
   password: string;
-}): Promise<ServiceResponse> => {
+}): Promise<LoginResponse> => {
   try {
     const { data: resData } = await publicAxios.post(
       `${authUrl}/login`,

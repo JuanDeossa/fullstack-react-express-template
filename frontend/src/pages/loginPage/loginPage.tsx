@@ -18,21 +18,29 @@ export const LoginPage = () => {
   const handleLogin = async (data: { email: string; password: string }) => {
     setIsLoading(true);
 
-    const { data: user, message } = await loginService({
+    const { data: dataResponse, message } = await loginService({
       email: data?.email || "",
       password: data?.password || "",
     });
 
     setIsLoading(false);
 
-    if (!user) {
+    if (!dataResponse) {
       throwErrorAlert(message);
       return;
     }
 
-    login(user);
+    const { user, token } = dataResponse;
 
     navigate({ path: paths.HOME, replace: false });
+
+    login({
+      id: user.id,
+      token: token,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+    });
   };
 
   if (user) {

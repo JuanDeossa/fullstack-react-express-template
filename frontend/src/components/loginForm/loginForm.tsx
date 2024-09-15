@@ -61,6 +61,7 @@ export const LoginForm = ({ onSubmit }: Props) => {
   return (
     <Form {...form}>
       <form
+        data-testid="login-form"
         onSubmit={form.handleSubmit(onSubmit_)}
         className="space-y-4 border border-gray-300 p-8 rounded-lg"
       >
