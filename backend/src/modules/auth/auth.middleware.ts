@@ -73,7 +73,7 @@ export const validateRefreshMiddleware = (
       res.clearCookie("refreshToken", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       });
       // If the error is related to JWT verification, return a 401
       throw new CustomError(
