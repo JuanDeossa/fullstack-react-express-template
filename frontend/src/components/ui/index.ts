@@ -12,6 +12,19 @@ export {
   AlertDialogPortal,
 } from "./alert-dialog";
 
+export {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+  DialogOverlay,
+  DialogPortal,
+} from "./dialog";
+
 export { Button, buttonVariants } from "./button";
 
 export {
@@ -30,3 +43,16 @@ export { Input } from "./input";
 export { Label } from "./label";
 
 export { Toaster } from "./sonner";
+
+export {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectGroup,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectValue,
+} from "./select";
