@@ -56,3 +56,5 @@ export {
   SelectSeparator,
   SelectValue,
 } from "./select";
+
+export * from "./dropdown-menu";
