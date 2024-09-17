@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { createUser, getUsers } from "../../services";
+import { createUser, deleteUser, getUsers } from "../../services";
 import { CreateUser, UserResponse } from "../../types/user/user.interfaces";
 import { Toaster } from "sonner";
-import { UsersList, CreateUserModal } from "@/components";
+import { CreateUserModal, UsersTable } from "@/components";
 import { throwErrorAlert, throwSuccessAlert } from "@/utils/alerts";
 import { useRoles } from "@/hooks";
 
@@ -37,6 +37,16 @@ export const AdminUsersPage = () => {
     }
   };
 
+  const handleDeleteUser = async (id: string) => {
+    const success = await deleteUser(id);
+    if (!success) {
+      throwErrorAlert("No se pudo eliminar el usuario");
+    } else {
+      fetchUsers();
+      throwSuccessAlert("Usuario eliminado correctamente");
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -48,7 +58,7 @@ export const AdminUsersPage = () => {
           {/* Table Header */}
           <div className="flex justify-between w-full">
             {/* users indicator */}
-            <h2 className="text-xl font-semibold text-red-500">
+            <h2 className="text-xl font-semibold">
               Usuarios actuales: <b>{users.length}</b>
             </h2>
 
@@ -58,7 +68,7 @@ export const AdminUsersPage = () => {
             />
           </div>
 
-          <UsersList users={users} fetchUsers={fetchUsers} />
+          <UsersTable users={users} handleDeleteUser={handleDeleteUser} />
         </div>
       </div>
       {/* Alert */}

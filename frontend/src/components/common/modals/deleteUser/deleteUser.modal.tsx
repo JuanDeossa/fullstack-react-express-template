@@ -10,6 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { IconTrash } from "../../icons";
 
 interface Props {
   email: string;
@@ -24,7 +25,7 @@ export const DeleteUserModal = ({ email, onConfirm }: Props) => {
           size="icon"
           className="bg-transparent border-none shadow-none hover:bg-transparent"
         >
-          ❌
+          <IconTrash className="text-red-500 w-5 h-5" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

@@ -58,3 +58,4 @@ export {
 } from "./select";
 
 export * from "./dropdown-menu";
+export * from "./table";

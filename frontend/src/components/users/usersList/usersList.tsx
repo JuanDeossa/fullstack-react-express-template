@@ -56,7 +56,7 @@ const UserCard = ({
 }) => {
   return (
     <div
-      className={`py-2 px-4 border rounded-md flex justify-between gap-5 ${
+      className={`py-2 px-4 border rounded-md flex justify-between gap-5 dark:text-gray-800 ${
         !isHeader ? "bg-gray-50 border-gray-300" : "bg-gray-200"
       }`}
     >

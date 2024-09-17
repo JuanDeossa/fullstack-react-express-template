@@ -1,9 +1,13 @@
-import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
+import { PiEyeBold, PiEyeClosedBold, PiTrash } from "react-icons/pi";
 
 export const IconEyeOpen = ({ ...props }) => {
-  return <EyeOpenIcon {...props} />;
+  return <PiEyeBold {...props} />;
 };
 
 export const IconEyeClosed = ({ ...props }) => {
-  return <EyeClosedIcon {...props} />;
+  return <PiEyeClosedBold {...props} />;
+};
+
+export const IconTrash = ({ ...props }) => {
+  return <PiTrash {...props} />;
 };

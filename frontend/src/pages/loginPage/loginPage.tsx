@@ -7,6 +7,7 @@ import { useAuth, useNav } from "@/hooks";
 import { LoginForm, Spinner } from "@/components";
 import { throwErrorAlert } from "@/utils/alerts";
 import { paths } from "@/routes/paths";
+import { ThemeProvider } from "@/context/theme-provider";
 
 export const LoginPage = () => {
   //
@@ -49,9 +50,11 @@ export const LoginPage = () => {
 
   return (
     <>
-      <div className="LoginPage min-h-screen bg-gray-50 grid place-content-center">
-        {isLoading ? <Spinner /> : <LoginForm onSubmit={handleLogin} />}
-      </div>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <div className="LoginPage min-h-screen grid place-content-center">
+          {isLoading ? <Spinner /> : <LoginForm onSubmit={handleLogin} />}
+        </div>
+      </ThemeProvider>
 
       <Toaster />
     </>
