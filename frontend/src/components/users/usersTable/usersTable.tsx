@@ -18,9 +18,13 @@ interface Props {
 }
 
 export const UsersTable = ({ users, handleDeleteUser }: Props) => {
+  const emptyUsers = users.length === 0;
+
   return (
     <Table>
-      <TableCaption>Lista de usuarios.</TableCaption>
+      <TableCaption>
+        {emptyUsers ? "No hay usuarios registrados." : "Lista de usuarios."}
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[140px]">Nombre</TableHead>

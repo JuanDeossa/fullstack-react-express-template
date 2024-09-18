@@ -24,6 +24,7 @@ export const DeleteUserModal = ({ email, onConfirm }: Props) => {
         <Button
           size="icon"
           className="bg-transparent border-none shadow-none hover:bg-transparent"
+          data-testid="delete-user-button"
         >
           <IconTrash className="text-red-500 w-5 h-5" />
         </Button>
