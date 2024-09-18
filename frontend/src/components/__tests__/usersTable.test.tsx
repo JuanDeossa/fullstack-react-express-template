@@ -2,7 +2,7 @@ import { it, expect, describe, vi } from "vitest";
 
 import { render, screen } from "@testing-library/react";
 
-import { UsersTable } from "./usersTable";
+import { UsersTable } from "../users/usersTable/usersTable";
 import { UserResponse } from "@/types";
 import { userRolesFormat } from "@/utils";
 import userEvent from "@testing-library/user-event";

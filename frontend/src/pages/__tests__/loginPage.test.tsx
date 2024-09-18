@@ -2,7 +2,7 @@ import { it, expect, describe, vi, Mock } from "vitest";
 
 import { render, screen } from "@testing-library/react";
 
-import { LoginPage } from "./loginPage";
+import { LoginPage } from "../loginPage/loginPage";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContext } from "@/context/authContext";
 import userEvent from "@testing-library/user-event";

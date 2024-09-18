@@ -4,7 +4,7 @@ import { expect, it, vi } from "vitest";
 
 import { userEvent } from "@testing-library/user-event";
 import { errorMessages } from "@/utils/messages/error.messages";
-import { UserForm } from "./UserForm";
+import { UserForm } from "../users/UserForm/UserForm";
 import { UserRole } from "@/types/user/user.interfaces";
 
 const {

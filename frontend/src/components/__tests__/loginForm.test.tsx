@@ -4,7 +4,7 @@ import { expect, it, vi } from "vitest";
 
 import { userEvent } from "@testing-library/user-event";
 import { errorMessages } from "@/utils/messages/error.messages";
-import { LoginForm } from "./loginForm";
+import { LoginForm } from "../loginForm/loginForm";
 
 const {
   email: { invalid: emailInvalid },
